@@ -1,9 +1,10 @@
 dir$ = "c:\teaching\taken\ling446\"
+file$ = "'dir$'vowelproject3.txt"
 
-filedelete 'dir$'dan3.txt
-fileappend 'dir$'dan3.txt Start'tab$'End'tab$'Duration'tab$'1/3'tab$'F1'tab$'F2'tab$'2/3'tab$'F1'tab$'F2'tab$'Speaker'tab$'Word'newline$'
+filedelete 'file$'
+fileappend 'file$' Start'tab$'End'tab$'Duration'tab$'1/3'tab$'F1'tab$'F2'tab$'2/3'tab$'F1'tab$'F2'tab$'Speaker'tab$'Word'newline$'
 
-procedure processFile .name$
+procedure processFile .name$ .count .max
 
   # open the textgrid and sound files
   Read from file... 'dir$''.name$'.TextGrid
@@ -12,7 +13,7 @@ procedure processFile .name$
   # get the sound file
   select Sound '.name$'
   # calculate formants
-  To Formant (burg)... 0 4 5500 0.025 30
+  To Formant (burg)... 0 .count .max 0.025 30
 
   # find the vowel tier
   select TextGrid '.name$'
@@ -48,7 +49,7 @@ procedure processFile .name$
       # measure the second third
       .gf1 = Get value at time... 1 '.glide' Hertz Linear
       .gf2 = Get value at time... 2 '.glide' Hertz Linear
-      fileappend "'dir$'vowelproject2.txt" '.beg:3''tab$''.end:3''tab$''.dur:3''tab$''.onset:3''tab$''.of1:0''tab$''.of2:0''tab$''.glide:3''tab$''.gf1:0''tab$''.gf2:0''tab$''.name$''tab$''.word$''newline$'
+      fileappend 'file$' '.beg:3''tab$''.end:3''tab$''.dur:3''tab$''.onset:3''tab$''.of1:0''tab$''.of2:0''tab$''.glide:3''tab$''.gf1:0''tab$''.gf2:0''tab$''.name$''tab$''.word$''newline$'
 #      # mark measurement points
 #      editor TextGrid '.name$'
 #      Move cursor to... '.onset'
@@ -68,6 +69,9 @@ procedure processFile .name$
   Remove
 endproc
 
-# call processFile dan
-call processFile Jennifer
+call processFile dan 5 5500
+fileappend 'file$' 'newline$'
+call processFile Jennifer 4 5500
+fileappend 'file$' 'newline$'
+call processFile dan 4 4500
 
